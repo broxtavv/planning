@@ -3,252 +3,100 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-  <meta name="theme-color" content="#0E0E11" />
+  <meta name="theme-color" content="#000000" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>AI Day Planner</title>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <title>Plan</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='black'/><text x='50' y='50' font-size='60' fill='white' text-anchor='middle' dominant-baseline='central'>P</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- ============ ОНБОРДИНГ ============ -->
-  <div id="onboarding" class="onboarding hidden">
-    <div class="onb-track" id="onbTrack">
-      <div class="onb-slide">
-        <div class="onb-icon">📋</div>
-        <h2>Планируй день легко</h2>
-        <p>Задачи, календарь и прогресс — всё в одном месте</p>
-      </div>
-      <div class="onb-slide">
-        <div class="onb-icon">✨</div>
-        <h2>ИИ составит план</h2>
-        <p>Опиши свой день словами — ассистент расставит задачи по времени</p>
-      </div>
-      <div class="onb-slide">
-        <div class="onb-icon">🔔</div>
-        <h2>Ничего не забудь</h2>
-        <p>Уведомления напомнят о задачах и утреннем дайджесте</p>
-      </div>
-    </div>
-    <div class="onb-dots" id="onbDots"></div>
-    <button class="btn-primary" id="onbNext">Далее</button>
-    <button class="btn-ghost" id="onbSkip">Пропустить</button>
-  </div>
+  <main class="app">
 
-  <!-- ============ ХЕДЕР ============ -->
-  <header class="app-header">
-    <div class="header-left">
-      <h1 id="greeting">Доброе утро</h1>
-      <p id="currentDate" class="subtitle"></p>
-    </div>
-    <div class="header-right">
-      <button class="icon-btn" id="btnNotifications" aria-label="Уведомления">
-        <i data-lucide="bell"></i>
-        <span class="notif-dot hidden" id="notifDot"></span>
-      </button>
-      <button class="icon-btn" id="btnSettings" aria-label="Настройки">
-        <i data-lucide="settings"></i>
-      </button>
-    </div>
-  </header>
-
-  <main class="app-main">
-
-    <!-- ============ ЗАДАЧИ НА ДЕНЬ ============ -->
-    <section class="card tasks-card">
-      <div class="card-head">
-        <div>
-          <h2>Задачи на день</h2>
-          <p class="progress-label" id="progressLabel">Выполнено 0 из 0</p>
-        </div>
-        <button class="icon-btn small" id="btnAddTask" aria-label="Добавить">
-          <i data-lucide="plus"></i>
-        </button>
+    <!-- ============ ЗАДАЧИ ============ -->
+    <section class="block">
+      <div class="block-head">
+        <span class="date-label" id="dateLabel"></span>
+        <button class="icon" id="btnAddTask" aria-label="Добавить">+</button>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
+      <p class="progress" id="progressLabel">0 из 0</p>
       <ul class="task-list" id="taskList"></ul>
-      <div class="empty-state hidden" id="emptyTasks">
-        <p>Пока нет задач — попроси ИИ составить план ✨</p>
-      </div>
+      <p class="empty hidden" id="emptyTasks">нет задач</p>
     </section>
 
     <!-- ============ КАЛЕНДАРЬ ============ -->
-    <section class="card calendar-card">
+    <section class="block" id="calendarBlock">
       <div class="cal-head">
-        <button class="icon-btn small" id="calPrev"><i data-lucide="chevron-left"></i></button>
-        <h3 id="calMonthLabel"></h3>
-        <button class="icon-btn small" id="calNext"><i data-lucide="chevron-right"></i></button>
+        <button class="icon" id="calPrev">‹</button>
+        <span id="calMonthLabel"></span>
+        <button class="icon" id="calNext">›</button>
       </div>
       <div class="cal-weekdays">
-        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+        <span>П</span><span>В</span><span>С</span><span>Ч</span><span>П</span><span>С</span><span>В</span>
       </div>
       <div class="cal-grid" id="calGrid"></div>
     </section>
 
-    <!-- ============ ЧАТ С ИИ ============ -->
-    <section class="card chat-card">
-      <div class="card-head">
-        <h2>Ассистент</h2>
-        <button class="icon-btn small" id="btnClearChat" title="Очистить чат">
-          <i data-lucide="trash-2"></i>
-        </button>
-      </div>
+    <!-- ============ ЧАТ ============ -->
+    <section class="block" id="chatBlock">
       <div class="chat-messages" id="chatMessages"></div>
-      <div class="chips" id="chips">
-        <button class="chip" data-prompt="Составь план на день: работа 10-18, спортзал, купить продукты">Составь план на день</button>
-        <button class="chip" data-prompt="Утренняя рутина: зарядка, душ, завтрак, планирование">Утренняя рутина</button>
-        <button class="chip" data-prompt="Учёба 2 часа и спортзал вечером">Учёба + спорт</button>
-      </div>
-      <div class="chat-input-row">
-        <button class="icon-btn small" id="btnVoice" title="Голосовой ввод">
-          <i data-lucide="mic"></i>
-        </button>
-        <input type="text" id="chatInput" placeholder="Опиши свой день, и я расставлю задачи…" />
-        <button class="send-btn" id="btnSend" aria-label="Отправить">
-          <i data-lucide="sparkles"></i>
-        </button>
+      <div class="chat-input">
+        <input type="text" id="chatInput" />
+        <button class="icon" id="btnSend" aria-label="Отправить">→</button>
       </div>
     </section>
 
   </main>
 
-  <!-- ============ ПЛАВАЮЩАЯ КНОПКА + ============ -->
-  <button class="fab" id="fabAdd" aria-label="Быстрое добавление">
-    <i data-lucide="plus"></i>
-  </button>
-
-  <!-- ============ НИЖНЯЯ НАВИГАЦИЯ ============ -->
-  <nav class="bottom-nav">
-    <button class="nav-btn active" data-tab="day">
-      <i data-lucide="home"></i><span>День</span>
-    </button>
-    <button class="nav-btn" data-tab="calendar">
-      <i data-lucide="calendar"></i><span>Календарь</span>
-    </button>
-    <button class="nav-btn" data-tab="ai">
-      <i data-lucide="sparkles"></i><span>ИИ</span>
-    </button>
-    <button class="nav-btn" data-tab="settings">
-      <i data-lucide="settings"></i><span>Настройки</span>
-    </button>
-  </nav>
-
-  <!-- ============ ШТОРКА: ЗАДАЧИ ДНЯ ============ -->
+  <!-- ============ ШТОРКА ДНЯ ============ -->
   <div class="sheet-backdrop hidden" id="sheetBackdrop"></div>
   <div class="sheet hidden" id="daySheet">
-    <div class="sheet-handle"></div>
     <div class="sheet-head">
-      <h3 id="sheetDate">Задачи</h3>
-      <button class="icon-btn small" id="sheetClose"><i data-lucide="x"></i></button>
+      <span id="sheetDate"></span>
+      <button class="icon" id="sheetClose">×</button>
     </div>
     <ul class="task-list" id="sheetTaskList"></ul>
   </div>
 
-  <!-- ============ МОДАЛКА: НАСТРОЙКИ ============ -->
-  <div class="modal-backdrop hidden" id="settingsBackdrop"></div>
-  <div class="modal hidden" id="settingsModal">
-    <div class="modal-head">
-      <h3>Настройки</h3>
-      <button class="icon-btn small" id="settingsClose"><i data-lucide="x"></i></button>
-    </div>
-    <div class="modal-body">
-
-      <div class="settings-section">
-        <label class="settings-label">Твоё имя</label>
-        <input type="text" id="setName" class="text-input" placeholder="Например, Алекс" />
-      </div>
-
-      <div class="settings-section">
-        <label class="settings-label">API-ключ (DeepSeek / OpenRouter)</label>
-        <input type="password" id="setApiKey" class="text-input" placeholder="sk-..." />
-        <p class="hint">Ключ хранится только на устройстве. Без него работает демо-режим.</p>
-      </div>
-
-      <div class="settings-section">
-        <label class="settings-label">API endpoint</label>
-        <input type="text" id="setApiUrl" class="text-input" />
-      </div>
-
-      <div class="settings-section">
-        <label class="settings-label">Модель</label>
-        <input type="text" id="setApiModel" class="text-input" />
-      </div>
-
-      <div class="settings-section">
-        <div class="toggle-row">
-          <span>Уведомления о задачах</span>
-          <label class="switch"><input type="checkbox" id="setNotifTasks" /><span class="slider"></span></label>
-        </div>
-        <div class="toggle-row">
-          <span>Утренний дайджест (08:00)</span>
-          <label class="switch"><input type="checkbox" id="setNotifDigest" /><span class="slider"></span></label>
-        </div>
-        <div class="toggle-row">
-          <span>AMOLED-тема</span>
-          <label class="switch"><input type="checkbox" id="setAmoled" /><span class="slider"></span></label>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <button class="btn-secondary" id="btnExport"><i data-lucide="download"></i> Экспорт данных</button>
-        <button class="btn-secondary" id="btnImport"><i data-lucide="upload"></i> Импорт данных</button>
-        <input type="file" id="importFile" accept="application/json" hidden />
-        <button class="btn-secondary danger" id="btnReset"><i data-lucide="trash-2"></i> Сбросить всё</button>
-      </div>
-
-      <div class="settings-section">
-        <p class="hint">Версия 1.0 · AI Day Planner</p>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ============ МОДАЛКА: РЕДАКТИРОВАНИЕ ЗАДАЧИ ============ -->
+  <!-- ============ МОДАЛКА ЗАДАЧИ ============ -->
   <div class="modal-backdrop hidden" id="taskBackdrop"></div>
   <div class="modal hidden" id="taskModal">
     <div class="modal-head">
-      <h3 id="taskModalTitle">Новая задача</h3>
-      <button class="icon-btn small" id="taskClose"><i data-lucide="x"></i></button>
+      <span id="taskModalTitle">Новая</span>
+      <button class="icon" id="taskClose">×</button>
     </div>
-    <div class="modal-body">
-      <label class="settings-label">Название</label>
-      <input type="text" id="taskTitle" class="text-input" placeholder="Что нужно сделать?" />
-
-      <label class="settings-label">Дата</label>
-      <input type="date" id="taskDate" class="text-input" />
-
-      <label class="settings-label">Время</label>
-      <input type="time" id="taskTime" class="text-input" />
-
-      <label class="settings-label">Длительность (мин)</label>
-      <input type="number" id="taskDuration" class="text-input" value="30" min="5" step="5" />
-
-      <label class="settings-label">Категория</label>
-      <select id="taskCategory" class="text-input">
-        <option value="work">💼 Работа</option>
-        <option value="study">📚 Учёба</option>
-        <option value="sport">🏃 Спорт</option>
-        <option value="personal">🏠 Личное</option>
-        <option value="health">💚 Здоровье</option>
-        <option value="other">📌 Другое</option>
-      </select>
-
-      <button class="btn-primary" id="taskSave">Сохранить</button>
-    </div>
+    <input type="text" id="taskTitle" class="input" placeholder="название" />
+    <input type="date" id="taskDate" class="input" />
+    <input type="time" id="taskTime" class="input" />
+    <input type="number" id="taskDuration" class="input" value="30" min="5" step="5" />
+    <select id="taskCategory" class="input">
+      <option value="work">работа</option>
+      <option value="study">учёба</option>
+      <option value="sport">спорт</option>
+      <option value="personal">личное</option>
+      <option value="health">здоровье</option>
+      <option value="other">другое</option>
+    </select>
+    <button class="btn" id="taskSave">сохранить</button>
   </div>
 
-  <!-- ============ КОНФЕТТИ ============ -->
-  <canvas id="confetti" class="confetti hidden"></canvas>
+  <!-- ============ МОДАЛКА API-КЛЮЧА (первый запуск) ============ -->
+  <div class="modal-backdrop hidden" id="keyBackdrop"></div>
+  <div class="modal hidden" id="keyModal">
+    <div class="modal-head">
+      <span>API-ключ</span>
+      <button class="icon" id="keyClose">×</button>
+    </div>
+    <p class="hint">вставь ключ DeepSeek или OpenRouter. без ключа — демо-режим.</p>
+    <input type="password" id="keyInput" class="input" placeholder="sk-..." />
+    <button class="btn" id="keySave">готово</button>
+  </div>
 
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="app.js"></script>
 </body>
-                                 </html>
+</html>
