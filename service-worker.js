@@ -1,6 +1,6 @@
 /* AI Day Planner — Service Worker */
 
-const CACHE = 'aidp-v1';
+const CACHE = 'aidp-v2';
 const ASSETS = [
   './',
   './index.html',
